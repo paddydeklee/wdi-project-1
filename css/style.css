@@ -1,7 +1,57 @@
 body {
-  background-color: blue;
+  background-color: white;
 }
 
 h1 {
   color: blue;
 }
+
+div {
+ width: 500px;
+ height: 550px;
+ margin: 0 auto;
+ border: 1px solid black;
+ position: relative
+}
+
+ul {
+  width: 500px;
+  margin: 0px auto;
+  padding: 0px;
+}
+
+ul.grid li {
+  width:  100px;
+  height: 100px;
+  list-style-type:  none;
+  display: inline-block;
+  border: 0px solid;
+  padding: 0px;
+  margin: 0px;
+}
+
+.transition {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.alive   { 
+  background: rgba(1,1,1,0.5);
+  border: none; 
+}
+
+#player {
+  border: solid black 1px;
+  width: 100px;
+  height: 50px;
+  display: inline-block;
+  border: 0px solid;
+  padding: 0px;
+  margin: 0px;
+  background: red;
+  position: absolute;
+  bottom: 0;
+}
+
