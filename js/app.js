@@ -9,6 +9,15 @@ console.log('Hello')
   $(function(){
 
 
+  var pos = function(){
+    var p = $('#playerPosition');
+    var playerPosition = p.position();
+    console.log = ("posiion")
+    $( ".playerPosition" ).text( "left: " + playerPosition.left + ", top: " + playerPosition.top );
+  }
+
+
+
   this.setInterval = (moveDown, 500)
 
     var moveDown = function () {
@@ -17,7 +26,7 @@ console.log('Hello')
                 }, 500)
             }
     //PROBLEM 2! Make the ul move down every 5 seconds!!
-      //SOLUTION 2
+      //SOLUTION 2 ....
 
 
       $('li').on('click', moveDown)
@@ -31,9 +40,40 @@ console.log('Hello')
 
       });
 
+      //Move the player left and right
+            setInterval(movePlayer, 20);
+            var keys = {}
 
 
+            $(this).keydown(function(e) {
+                keys[e.keyCode] = true;
+            });
 
+            //this lets me move the player more than once!
+            $(this).keyup(function(e) {
+                delete keys[e.keyCode];
+            });
+
+            function movePlayer() {
+                for (var direction in keys) {
+                    if (!keys.hasOwnProperty(direction)) continue;
+                    if (direction == 37) {
+                        $("#player").animate({left: "-=5"}, 0);                
+                    }
+                    // if (direction == 38) {
+                    //     $("#player").animate({top: "-=5"}, 0);  
+                    // }
+                    if (direction == 39) {
+                        $("#player").animate({left: "+=5"}, 0);  
+                    }
+                    // if (direction == 40) {
+                    //     $("#player").animate({top: "+=5"}, 0);  
+                    // }
+                }
+            }
+
+
+            //record the position of player
 
     });
 
