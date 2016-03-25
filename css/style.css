@@ -16,17 +16,17 @@ div.mainArea {
 }
 
 ul {
-  width: 500px;
+  width: 505px;
   margin: 0px auto;
   padding: 0px;
 }
 
 ul.grid li {
-  width:  100px;
+  width:  95px;
   height: 100px;
   list-style-type:  none;
   display: inline-block;
-  border: 0px solid;
+  border-left: 1px solid black;
   padding: 0px;
   margin: 0px;
 }
@@ -66,14 +66,12 @@ ul.grid li {
   z-index: 1;
 }
 
-
-
 #bullet {
   position: relative;
   margin:0 auto;
   width:10px;
   height:10px;
-  background: orange;
+  background: black;
   z-index: 0;
 }
 

@@ -8,14 +8,11 @@ $(function(){
   setInterval(bulletPos, 500)
 
 
-
   function bulletPos() {
-  //   bullet = "hello";
-  //   return bullet;
-  console.log(0)
+    bullet = ($("#bullet").offset().left);
+    return bullet;
+    console.log(bullet)
   }
-
-
 
   var player = {
     score: 0,
@@ -26,17 +23,9 @@ $(function(){
         //first make the collision event a click
         //PROBLEM 1! Hiding the elements results in the others moving into their place
           //SOLUTION 1 - Remove class alive and css alive will have alive design
-          $('li').on('click', die);
-
-          function die() {
-                      console.log("die fiunction activated")
-                      $(this).removeClass( "alive" ).animate(500);
-                    }
-
-          function kill(shot) {
-                      console.log("kill fiunction activated")
-                      $(shot).removeClass( "alive" ).animate(500);
-                    }
+          $('li').on('click', function() {
+            $(this).removeClass( "alive" ).animate(500);
+          });
 
   //FUNCTION 3
   //Animate player to move left on left key  press
@@ -81,35 +70,17 @@ $(function(){
         if (delay == 0){
         if (direction == 38) {
 
-          
-
+          console.log('fired')
             //PROBLEM the bullet is still attached to the position of the player
             //SOLUTION this should create a div called bullet and append it to the main area div
             //Then this should move up the page and the its position should be recorded
             //then it should detect collision
-            //maybe delay the collision
-            var bullet = $('#bullet').offset();
-            var bad1Pos = $('#bad1').offset()
-            var hit = bullet.left - bad1Pos.left;
-            var baddie = $('#bad5')
-            console.log(bullet)
-            console.log(bad1Pos)
-            console.log(bullet.left - bad1Pos.left)
-            if( hit > 400){
-              console.log("direct hit!")
-              kill(baddie);
-            } 
-
-
-
             $("#bullet").animate({top: "-500"}, 500);
             $("#bullet").animate({width: "+=10", height: "+=10", color:"red", opacity:"0.5"}, 50)
 
             $("#bullet").animate({width: "10", height: "10", color:"orange"}, 0)
             $("#bullet").animate({top: "0"}, 0)
-            
             delay = 40;
-
 
           }
 
