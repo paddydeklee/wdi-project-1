@@ -1,18 +1,20 @@
 var game = game || {};
 
-game.start = function(){
-  this.bullet;
-  this.delay = 0;
-  this.startAnim()
 
-
-}
-
-= function () {
+startAnim = function () {
    $(".grid").animate({
      "top": "+=50px" }, 1000)
    console.log("dropdown")
  }
+
+game.start = function(){
+  this.bullet;
+  this.delay = 0;
+  //QUESTION WHY IS THIS NOT A FUNCTION
+  startAnim();
+}
+
+
 
 
 
@@ -182,8 +184,8 @@ game.start = function(){
 
     function movePlayer() {
 
-      if (delay > 0){
-        delay -= 1;
+      if (game.delay > 0){
+        game.delay -= 1;
       }
 
       for (var direction in keys) {
@@ -197,7 +199,7 @@ game.start = function(){
           $("#player").animate({left: "+=5"}, 0);  
           player.position += 5;  
         }
-        if (delay == 0){
+        if (game.delay == 0){
           if (direction == 32) {
 
 
@@ -238,7 +240,7 @@ game.start = function(){
             $("#bullet").animate({width: "10", height: "10", color:"orange"}, 0)
             $("#bullet").animate({top: "0"}, 0)
             
-            delay = 40;
+            game.delay = 40;
 
 
           }
