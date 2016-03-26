@@ -1,260 +1,279 @@
+//TESTERS AND LOGS
+//click the lis they will disappear
+
+$('li').on('click', function() {
+  $(this).removeClass( "alive" ).animate(500);
+});
+
+function die() {
+  console.log("die fiunction activated")
+  $(this).removeClass( "alive" ).animate(500);
+}
+
+//get the mouse pos on the page
+$(this).on("mousemove", function(event) {
+  $("#mousePosition").text("pageX: " + event.pageX + ", pageY: " + event.pageY );
+});
+
+//get the key that has been pressed
+$(this).on("keydown", function( event ) {
+  $("#log").html(event.type + ": " +  event.which );
+});
+
+
 var game = game || {};
 
-
-startAnim = function () {
-   $(".grid").animate({
-     "top": "+=50px" }, 1000)
-   console.log("dropdown")
- }
+var collision = game.bullet - game.bad1Pos;
 
 game.start = function(){
-  this.bullet;
-  this.delay = 0;
-  //QUESTION WHY IS THIS NOT A FUNCTION
-  startAnim();
+  this.delayFire      = 0;
+  this.player1Score   = 0;
+  this.player2Score   = 0;
+  this.player         = $("#player");
+  this.baddies        = $(".baddie");
+  this.baddiesLeft    = []; // needs to be an array with all baddies left positions - FILL USING LOOP
+  this.baddiesTop     = []; // needs to be an array with all baddies top positions - FILL USING LOOP
+
+  this.bulletLeft     = $('#bullet').offset().left;
+  this.bulletTop      = $('#bullet').offset().top;
+  this.bad1           = $('#bad1')
+  this.findOffset     = function(){
+                          return $(bad1).offset();
+                          }
+  
+  // this.bad1Pos        = $(i).offset();
+  // this.differenceX    = bullet;
+  this.baddiePositions;
 }
 
 
+//GET BADDIE POSITIONS
+//get an array of all the baddies on the page
+//use loop to store left positions in another array
+game.baddiePositions = function (){
+  for (var i = 0; i < game.baddies.length; i++) {
+    this.baddies[i].innerHTML = game.bad1Pos;
 
-
-
-  // TTT.start = function(){
-  //   this.boxes = document.getElementsByTagName("li");
-  //   this.turnText = document.querySelector(".playerTurn");
-  //   this.reset = document.getElementById("reset");
-  //   console.log(this)
-  //   this.winCombos = [
-  //                      [0,1,2],[3,4,5],[6,7,8], // Horizontal
-  //                      [0,3,6],[1,4,7],[2,5,8], // Vertical
-  //                      [0,4,8],[2,4,6]          // Diagonal
-  //                    ];
-  //   this.moveCount  = 1;
-  //   this.oMoves     = [];
-  //   this.xMoves     = [];
-  //   this.bindEvents()
-  // }
-
-  // TTT.bindEvents = function (){
-  //   this.addXandOListener();
-  //   this.addResetListener();
-  // }
-
-  // TTT.addXandOListener = function(){
-  //   for (var i = 0; i < this.boxes.length; i++) {
-  //     this.boxes[i].addEventListener("click", function(){
-  //       TTT.play();
-  //     })
-  //   }
-  // }
-
-  // TTT.play = function(){
-  //   if (event.target.innerHTML.length > 0) return false;
-  //   if (this.moveCount % 2 === 0) {
-  //     this.playMove(this.oMoves, "O");
-  //   } else {
-  //     this.playMove(this.xMoves, "X");
-  //   }
-  //   this.checkForDraw();
-  // }
-
-
-
-
-
-
-
-  
-  //if I click the lis they will disappear
-  $('li').on('click', die)
-
-  $(this).on("mousemove", function(event) {
-    $("#mousePosition").text("pageX: " + event.pageX + ", pageY: " + event.pageY );
-  });
-
-
-  $(this).on("keydown", function( event ) {
-    $("#log").html(event.type + ": " +  event.which );
-  });
-
-
-  setInterval(startAnim, 10000)
-
-
-  
-
-  // $(function () {
-  //     // var firstMeasurements = {
-  //     //     top: $(".grid").css('top'),
-  //     //     height: $(".grid").css('width')
-
-  //     // }
-  //     var startAnim = function () {
-  //         $(".grid").animate({
-  //             "top": "+=100px" }, 1000, startAnim)
-  //         console.log("two")
-  //     }
-  //     startAnim();
-  //     // var resetAnim = function () {
-  //     //     $(".grid").css({
-  //     //         "top": firstMeasurements.width,
-  //     //         "height": firstMeasurements.height
-
-  //     //     });
-  //     //     startAnim();
-  //     //     console.log("four")
-  //     // }
-  //     // startAnim()
-  //     // console.log("five")
-  // });
-
-  $(function () {
-    var firstMeasurements = {
-      top: $("ul").css('top')
-    }
-    var startAnim = function () {
-      $("ul").animate({
-        "top": "10px;"
-      }, 5000, startAnim)
-    }
-    var resetAnim = function () {
-      $("ul").css({
-        "width": firstMeasurements.width,
-        "height": firstMeasurements.height
-      });
-      startAnim();
-    }
-    startAnim()
-  });
-
-
-  // setInterval(bulletPos, 500)
-
-
-  // function bulletPos() {
-  // //   bullet = "hello";
-  // //   return bullet;
-  // console.log("bulletPos")
-  // }
-
-
-
-  var player = {
-    score: 0,
-    position: 0
+    // this.baddies[i].setAttribute("class", "clear");
   }
-
-    //FUNCTION 6 lis in position and disappear when collision with bullet
-        //first make the collision event a click
-        //PROBLEM 1! Hiding the elements results in the others moving into their place
-          //SOLUTION 1 - Remove class alive
-          $('li').on('click', die);
-
-          function die() {
-            console.log("die fiunction activated")
-            $(this).removeClass( "alive" ).animate(500);
-          }
-
-          function kill(shot) {
-            console.log("kill fiunction activated")
-            $(shot).removeClass( "alive" ).animate(500);
-          }
-
-  //FUNCTION 3
-  //Animate player to move left on left key  press
-    //Player needs to have bounds on left and right
-      //Max widths! Switch off the left key when at width1 switch off the right key when at width2
+}
 
 
+//BADDIE MOVEMENT
+gridDown = function () {
+ $(".grid").animate({
+   "top": "+=50px" }, 800);
+
+ console.log("dropdown")
+}
+
+gridSwitch1 = function(){
+  $(".outer").animate({
+    "left": "+10px" }, 0);
+  $(".middle").animate({
+    "left": "-10px" }, 0);
+  $(".lower").animate({
+    "left": "+10px" }, 0);
+}
+
+gridSwitch2 = function(){
+  $(".outer").animate({
+    "left": "-10px" }, 0);
+  $(".middle").animate({
+    "left": "+10px" }, 0);
+  $(".lower").animate({
+    "left": "-10px" }, 0);
+}
+
+setInterval(gridDown, 100000)
+// setInterval(gridSwitch1, 1500)
+// setInterval(gridSwitch2, 3000)
+// setInterval(gridSwitch2, 4500)
+// setInterval(gridSwitch1, 6000)
+// setInterval(gridSwitch1, 7500)
+
+//SET UP KEYS
+var keys = {}
+//assign property keyCode to keys when key is down
+$(this).keydown(function(e) {
+  keys[e.keyCode] = true;
+});
+
+//this lets me move the player more than once by deleting the keys property
+$(this).keyup(function(e) {
+  delete keys[e.keyCode];
+});
+
+//MOVE PLAYER
+setInterval(movePlayer, 15)
+
+function movePlayer() {
+  for (var direction in keys) {
+    //only continue if the keys object does not have a direction property
+    if (!keys.hasOwnProperty(direction)) continue;
+    if (direction == 37) {
+      $("#player").animate({left: "-=5"}, 0);
+      player.position -= 5;                
+    }
+
+    if (direction == 39) {
+      $("#player").animate({left: "+=5"}, 0);  
+      player.position += 5;  
+    }
+    var playerPos = $('#player').position(); 
+  }
+}
 
 
-      setInterval(movePlayer, 20)
+//FIRE BULLET
+setInterval(fireBullet, 20)
+setInterval(fireBazooka, 50)
 
-      var keys = {}
+function fireBullet() {
 
-      $(this).keydown(function(e) {
-       keys[e.keyCode] = true;
-     });
+  for (var direction in keys) {
+      //only continue if the keys object does not have a direction property
+      if (!keys.hasOwnProperty(direction)) continue;
 
-    //this lets me move the player more than once!
-    $(this).keyup(function(e) {
-      delete keys[e.keyCode];
-    });
+      if (game.delayFire > 0) {
+        game.delayFire-- ;
+      } if (game.delayFire === 0){
+       if (direction == 38) {
+
+         $("#bullet").css("background-color", "blue");
+         $("#bullet").animate({top: "-520", backgroundColor: "rgb(0,191,255)"}, 600);
+         var bulletOffset = $('#bullet').offset();
+         var bulletOffsetLeft = bulletOffset.left;
+         // console.log(bulletOffsetLeft);
+          console.log(collision)
+          game.baddiePositions();
+         $("#bullet").animate({width: "+=5", height: "+=5", color:"blue", opacity:"1"}, 50)
+         $("#bullet").animate({width: "10", height: "10", color:"orange"}, 0)
+         $("#bullet").animate({top: "0"}, 0)
+
+         game.delayFire = 20;
+       }}}};
+
+
+//DIFFERENT WEAPONS!
+  function fireBazooka() {
+
+  for (var direction in keys) {
+      //only continue if the keys object does not have a direction property
+      if (!keys.hasOwnProperty(direction)) continue;
+
+      if (game.delayFire > 0) {
+        game.delayFire-- ;
+      } if (game.delayFire === 0){
+       if (direction == 32) {
+
+      $("#bullet").css("background-color", "red");
+      $("#bullet").animate({top: "-320", backgroundColor: "red", width: "+=30", height: "+=30"}, 500);
+      $("#bullet").animate({color:"red", opacity:"0.5"}, 100)
+      $("#bullet").animate({width: "10", height: "10", color:"orange"}, 0)
+      $("#bullet").animate({top: "0"}, 0)
+
+      game.delayFire = 20;
+
+      }}}};
 
 
 
-    function movePlayer() {
 
-      if (game.delay > 0){
-        game.delay -= 1;
+// if( hit > 400){
+//   console.log("direct hit!")
+//   kill(baddie);
+// } 
+
+
+
+// var ulBottom = $('.grid').offset();
+// // var hit = bullet.left - bad1Pos.left;
+// var baddie = $('#bad5');
+// console.log("Top of the bad guys" + ulBottom.top)
+   
+// Object {top: 581.4375, left: 658.3333740234375}
+// Object {top: 51.4375, left: 613.3333740234375}
+
+// console.log(bullet.left - bad1Pos.left)
+
+
+//if the bullet intercepts with any of the divs then it should explode
+
+// var playerPos = $('#player').position();
+// return playerPos
+
+
+
+       function kill(shotElement) {
+        console.log("kill fiunction activated")
+        $(shotElement).removeClass( "alive" ).animate(500);
       }
 
-      for (var direction in keys) {
-        if (!keys.hasOwnProperty(direction)) continue;
-        if (direction == 37) {
-          $("#player").animate({left: "-=5"}, 0);
-          player.position -= 5;                
-        }
 
-        if (direction == 39) {
-          $("#player").animate({left: "+=5"}, 0);  
-          player.position += 5;  
-        }
-        if (game.delay == 0){
-          if (direction == 32) {
-
-
-
-            //PROBLEM the bullet is still attached to the position of the player
-            //SOLUTION this should create a div called bullet and append it to the main area div
-            //Then this should move up the page and the its position should be recorded
-            //then it should detect collision
-            //maybe delay the collision
-            
-            var ulBottom = $('.grid').offset();
-            // var hit = bullet.left - bad1Pos.left;
-            var baddie = $('#bad5');
-            console.log("Top of the bad guys" + ulBottom.top)
-            
-            // Object {top: 581.4375, left: 658.3333740234375}
-            // Object {top: 51.4375, left: 613.3333740234375}
-
-            // console.log(bullet.left - bad1Pos.left)
-            
-
-            //if the bullet intercepts with any of the divs then it should explode
-            //
-
-            $("#bullet").animate({top: "-520"}, 500);
-            $("#bullet").animate({width: "+=10", height: "+=10", color:"red", opacity:"0.5"}, 50)
-            var bullet = $('#bullet').offset();
-            var bad1Pos = $('#bad1').offset();
-            console.log(bullet);
-            console.log(bad1Pos);
-            var hit = bullet.left - bad1Pos.left;
-
-            if( hit > 400){
-              console.log("direct hit!")
-              kill(baddie);
-            } 
-            console.log(hit)
-            $("#bullet").animate({width: "10", height: "10", color:"orange"}, 0)
-            $("#bullet").animate({top: "0"}, 0)
-            
-            game.delay = 40;
-
-
-          }
-
-            // var playerPos = $('#player').position();
-            // return playerPos
-          }
-          var playerPos = $('#player').position(); 
-        }
-      }
 
       document.addEventListener("DOMContentLoaded", function(){
         game.start();
       });
+
+
+      // OBJECT ORIENTATION
+      // TTT.start = function(){
+      //   this.boxes = document.getElementsByTagName("li");
+      //   this.turnText = document.querySelector(".playerTurn");
+      //   this.reset = document.getElementById("reset");
+      //   console.log(this)
+      //   this.winCombos = [
+      //                      [0,1,2],[3,4,5],[6,7,8], // Horizontal
+      //                      [0,3,6],[1,4,7],[2,5,8], // Vertical
+      //                      [0,4,8],[2,4,6]          // Diagonal
+      //                    ];
+      //   this.moveCount  = 1;
+      //   this.oMoves     = [];
+      //   this.xMoves     = [];
+      //   this.bindEvents()
+      // }
+
+      // TTT.bindEvents = function (){
+      //   this.addXandOListener();
+      //   this.addResetListener();
+      // }
+
+      // TTT.addXandOListener = function(){
+      //   for (var i = 0; i < this.boxes.length; i++) {
+      //     this.boxes[i].addEventListener("click", function(){
+      //       TTT.play();
+      //     })
+      //   }
+      // }
+
+      // TTT.play = function(){
+      //   if (event.target.innerHTML.length > 0) return false;
+      //   if (this.moveCount % 2 === 0) {
+      //     this.playMove(this.oMoves, "O");
+      //   } else {
+      //     this.playMove(this.xMoves, "X");
+      //   }
+      //   this.checkForDraw();
+      // }
+
+      //FUNCTION 6 lis in position and disappear when collision with bullet
+          //first make the collision event a click
+          //PROBLEM 1! Hiding the elements results in the others moving into their place
+            //SOLUTION 1 - Remove class alive
+
+      //FUNCTION 3
+      //Animate player to move left on left key  press
+        //Player needs to have bounds on left and right
+          //Max widths! Switch off the left key when at width1 switch off the right key when at width2
+
+
+      //FIRING BULLET
+      //PROBLEM the bullet is still attached to the position of the player
+      //SOLUTION this should create a div called bullet and append it to the main area div
+      //Then this should move up the page and the its position should be recorded
+      //then it should detect collision
+      //maybe delay collision
 
 
 // var livePosition = function (){
@@ -287,7 +306,7 @@ game.start = function(){
 
 
 
-        // var startAnim = 
+        // var gridDown = 
         //make enemies disappear
         //make player move on key press
         //Bullet Fire 
@@ -333,7 +352,7 @@ game.start = function(){
           //         width: $(".grid").css('width'),
           //         height: $(".grid").css('width')
           //     }
-          //     var startAnim = function () {
+          //     var gridDown = function () {
           //         $(".grid").animate({
           //             "width": "0px", "height": "0px"
           //         }, 5000, resetAnim)
@@ -343,8 +362,60 @@ game.start = function(){
           //             "width": firstMeasurements.width,
           //             "height": firstMeasurements.height
           //         });
-          //         startAnim();
+          //         gridDown();
           //     }
-          //     startAnim()
+          //     gridDown()
           // });
 
+
+          // $(function () {
+          //     // var firstMeasurements = {
+          //     //     top: $(".grid").css('top'),
+          //     //     height: $(".grid").css('width')
+
+          //     // }
+          //     var gridDown = function () {
+          //         $(".grid").animate({
+          //             "top": "+=100px" }, 1000, gridDown)
+          //         console.log("two")
+          //     }
+          //     gridDown();
+          //     // var resetAnim = function () {
+          //     //     $(".grid").css({
+          //     //         "top": firstMeasurements.width,
+          //     //         "height": firstMeasurements.height
+
+          //     //     });
+          //     //     gridDown();
+          //     //     console.log("four")
+          //     // }
+          //     // gridDown()
+          //     // console.log("five")
+          // });
+
+
+
+
+          // $(function () {
+          //   var firstMeasurements = {
+          //     top: $("ul").css('top')
+          //   }
+          //   var gridDown = function () {
+          //     $("ul").animate({
+          //       "top": "10px;"
+          //     }, 5000, gridDown)
+          //   }
+          //   var resetAnim = function () {
+          //     $("ul").css({
+          //       "width": firstMeasurements.width,
+          //       "height": firstMeasurements.height
+          //     });
+          //     gridDown();
+          //   }
+          //   gridDown()
+          // });
+
+
+          //TALKING POINTS
+          //DELAY FIRE FEATURE
+          //MOVEMENT OF BADDIES
