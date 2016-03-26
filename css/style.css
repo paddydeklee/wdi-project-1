@@ -7,7 +7,7 @@ h1 {
 }
 
 div.mainArea {
- width: 500px;
+ width: 480px;
  height: 550px;
  margin: 0 auto;
  padding: 10px;
@@ -16,7 +16,7 @@ div.mainArea {
 }
 
 ul {
-  width: 505px;
+  width: 500px;
   margin: 0px auto;
   padding: 0px;
 }

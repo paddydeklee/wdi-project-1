@@ -8,7 +8,6 @@ $(function(){
   setInterval(bulletPos, 500)
 
 
-
   function bulletPos() {
   //   bullet = "hello";
   //   return bullet;
@@ -46,7 +45,7 @@ $(function(){
 
 
 
-      setInterval(movePlayer, 20)
+    setInterval(movePlayer, 20)
 
     var keys = {}
 
@@ -88,23 +87,32 @@ $(function(){
             //Then this should move up the page and the its position should be recorded
             //then it should detect collision
             //maybe delay the collision
-            var bullet = $('#bullet').offset();
-            var bad1Pos = $('#bad1').offset()
-            var hit = bullet.left - bad1Pos.left;
+            
+            var ulBottom = $('.grid').offset();
+            // var hit = bullet.left - bad1Pos.left;
             var baddie = $('#bad5')
-            console.log(bullet)
-            console.log(bad1Pos)
-            console.log(bullet.left - bad1Pos.left)
+            console.log("Top of the bad guys" + ulBottom.top)
+            
+            
+            // console.log(bullet.left - bad1Pos.left)
+            
+
+            //if the bullet intercepts with any of the divs then it should explode
+            //
+
+            $("#bullet").animate({top: "-520"}, 500);
+            $("#bullet").animate({width: "+=10", height: "+=10", color:"red", opacity:"0.5"}, 50)
+            var bullet = $('#bullet').offset();
+            var bad1Pos = $('#bad1').offset();
+            console.log(bullet);
+            console.log(bad1Pos);
+            var hit = bullet.left - bad1Pos.left;
+
             if( hit > 400){
               console.log("direct hit!")
               kill(baddie);
             } 
-
-
-
-            $("#bullet").animate({top: "-500"}, 500);
-            $("#bullet").animate({width: "+=10", height: "+=10", color:"red", opacity:"0.5"}, 50)
-
+            console.log(hit)
             $("#bullet").animate({width: "10", height: "10", color:"orange"}, 0)
             $("#bullet").animate({top: "0"}, 0)
             
