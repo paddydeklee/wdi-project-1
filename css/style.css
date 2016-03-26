@@ -16,6 +16,8 @@ div.mainArea {
 }
 
 ul {
+  position: relative;
+  top: 0px;
   width: 500px;
   margin: 0px auto;
   padding: 0px;
