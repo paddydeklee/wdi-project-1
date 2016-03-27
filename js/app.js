@@ -42,9 +42,10 @@ game.start = function(){
   // this.bad1Pos        = $(i).offset();
   this.diffX          ;
   this.diffY          ;
-  this.collisionTol   = 10;
+  this.collisionTol   = 700;
   this.baddiePositions;
   this.detectCollision;
+  this.anyCollisions;
 }
 
 // get the top of each baddie
@@ -83,6 +84,17 @@ game.start = function(){
 //     )
 //   detectCollision();
 // }
+
+//Loop through all of the baddies and slot them into the collision detector
+function anyCollisions(){
+  for (var i = 0; i < game.baddies.length; i++) {
+    var checkBaddie = '($("#bad' + i + '"))';
+    detectCollision(($("#bullet")),checkBaddie)
+    // this.baddiesLeft.push(($("li"))
+    // this.baddies[i].setAttribute("class", "clear");
+  }
+}
+
 
 //COLLISION DETECTOR
 function detectCollision(elem1, elem2, tolerance){
