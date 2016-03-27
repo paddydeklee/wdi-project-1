@@ -33,18 +33,132 @@ game.start = function(){
   this.baddies        = $(".baddie");
   this.baddiesLeft    = []; // needs to be an array with all baddies left positions - FILL USING LOOP
   this.baddiesTop     = []; // needs to be an array with all baddies top positions - FILL USING LOOP
-
+  this.baddies        = $(".baddies").offset;
   this.bulletLeft     = $('#bullet').offset().left;
   this.bulletTop      = $('#bullet').offset().top;
-  this.bad1           = $('#bad1')
-  this.findOffset     = function(){
-                          return $(bad1).offset();
-                          }
+  this.bad1           = $('#1')
+  this.findOffset     = function(a){ return $(a).offset(); }
   
   // this.bad1Pos        = $(i).offset();
-  // this.differenceX    = bullet;
+  this.diffX          ;
+  this.diffY          ;
+  this.collisionTol   = 10;
   this.baddiePositions;
+  this.detectCollision;
 }
+
+// get the top of each baddie
+// get the left of each baddie
+// get the centre halfway top of each baddie
+// get the centre left of each baddie
+
+// do the same for the bullet
+
+
+//Thought about using pythag but don't need to as only want collision in 2 planes x and y
+// function detectCollision(){
+//   if (getDistance() < 10){
+//     return console.log("collision detected")
+//   } 
+// }
+
+// function getDistance(x1, y1, x2, y2){
+//   var a = difference(x1, x2);
+//   var b = difference(y1, y2);
+//   return Math.sqrt( a*a + b*b );
+// }
+
+// //find the difference between the bullet and the baddies in a straight line
+// function difference(p1, p2){
+//  return p1 - p2;
+// }
+
+// //must be able to handle the entire array of baddies
+// function setupCoords(elem){
+//   getDistance(
+//       this.bulletLeft,
+//       this.bulletTop,
+//       elem.left,
+//       elem.top
+//     )
+//   detectCollision();
+// }
+
+//COLLISION DETECTOR
+function detectCollision(elem1, elem2, tolerance){
+  tolerance = game.collisionTol;
+  if (getDiffX(elem1, elem2) < tolerance && getDiffY(elem1, elem2) < tolerance){
+    kill(elem2);
+    return console.log("COLLISION DETECTED");
+  } else return console.log("no collision detected")
+}
+// 
+
+//gets the distance between two elements in the x axis
+function getDiffX(elem1, elem2){
+  game.diffX = getOffsetX(elem1) - getOffsetX(elem2);
+  return game.diffX;
+}
+
+//and diff in the y axis
+function getDiffY(elem1, elem2){
+  game.diffY = getOffsetY(elem1) - getOffsetY(elem2);
+  return game.diffY;
+}
+
+//gets the position of an element and returns its top left point
+function getOffsetX(elem){ 
+  return getOffset(elem).left;
+}
+
+function getOffsetY(elem){ 
+  return getOffset(elem).top;
+}
+
+function getOffset(elem){
+  return $(elem).offset();
+}
+
+
+
+// pythagoras to get the distance from the centre of the bullet and the centre of the baddie
+// repeat this for each baddie on a loop.
+// interval to run the loop 100 times as soon as the bullet is fired.
+
+//need to pass this function the value of top x and left y of EACH baddie 
+//I am setting the value of each baddie size... so I know that the 
+
+function findCentreXRect(x){
+  var x1 = (x + 50);
+  console.log(x + (width/2));
+};
+
+function findCentreYRect(y){
+  var y1 = (y + 25);
+  console.log(y + (height/2));
+}
+
+
+
+function getTopLeftBaddie(){
+
+}
+// function findCentreRect(x,y){
+//   var centreX = (x + (width/2));
+//   console.log(x + (width/2));
+//   var centreY = (y + (height/2));
+//   console.log(y + (height/2));
+// };
+
+// function draw(){
+//  //from basicCanvas.html
+//  var canvas = document.getElementById("canvas");
+//  if (canvas.getContext){
+//   var ctx = canvas.getContext('2d');
+//   ctx.fillStyle = "#FF0000";
+//   ctx.fillRect(0, 0, 500, 50);
+//  } // end if
+//  } // end draw
 
 
 //GET BADDIE POSITIONS
@@ -52,11 +166,13 @@ game.start = function(){
 //use loop to store left positions in another array
 game.baddiePositions = function (){
   for (var i = 0; i < game.baddies.length; i++) {
-    this.baddies[i].innerHTML = game.bad1Pos;
-
+    this.baddies[i].innerHTML = game.findOffset(bad1.left)
+    // this.baddiesLeft.push(($("li"))
     // this.baddies[i].setAttribute("class", "clear");
   }
 }
+
+
 
 
 //BADDIE MOVEMENT
@@ -124,7 +240,6 @@ function movePlayer() {
   }
 }
 
-
 //FIRE BULLET
 setInterval(fireBullet, 20)
 setInterval(fireBazooka, 50)
@@ -144,14 +259,11 @@ function fireBullet() {
          $("#bullet").animate({top: "-520", backgroundColor: "rgb(0,191,255)"}, 600);
          var bulletOffset = $('#bullet').offset();
          var bulletOffsetLeft = bulletOffset.left;
-         // console.log(bulletOffsetLeft);
-          console.log(collision)
-          game.baddiePositions();
          $("#bullet").animate({width: "+=5", height: "+=5", color:"blue", opacity:"1"}, 50)
          $("#bullet").animate({width: "10", height: "10", color:"orange"}, 0)
          $("#bullet").animate({top: "0"}, 0)
 
-         game.delayFire = 20;
+         game.delayFire = 40;
        }}}};
 
 
