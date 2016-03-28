@@ -9,6 +9,7 @@ function startSequence(){
   $("#incoming").fadeOut(0);
   $("#ties").fadeOut(0);
   $("p").fadeOut(0);
+
   $("#player").fadeIn(2000);
 
   $("#player").animate({
@@ -136,6 +137,17 @@ function createBaddies(){
   }
 }
 
+function messageAmmo(){
+var $noMoreAmmo = $("<p id='noMoreAmmo'>We're out of blasters!></p>");
+var left = 100;
+var top  = 500;
+
+$noMoreAmmo
+  .css("left", left)
+  .css("top", top);
+
+$(".grid").append($noMoreAmmo);
+}
 
 //BADDIE MOVEMENT
 gridDown = function () {
@@ -195,7 +207,11 @@ gridDown = function () {
         fireBazooka();       
         break;
       case 32 : // space
-        fireBlaster();       
+      if (game.shield >= 1){
+        fireBlaster();     
+        }  else {
+          console.log("no more lazers!")
+        }
         break;
       case 37:
         movePlayer(keycode); // left;
@@ -279,7 +295,6 @@ gridDown = function () {
   }
 
   function fireBlaster() {
-
 
       console.log("BOOM");
       var $blaster = createBlaster();
