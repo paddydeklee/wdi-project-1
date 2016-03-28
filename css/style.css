@@ -1,13 +1,48 @@
 body {
-  background-color: white;
+  background-image: url('../assets/bg.jpg');
   width: 100%;
   height: 100vh;
+  font-family:'Candal', sans-serif;
+  color: #fff;
 }
 
-body { background-color: black; }
-
 h1 {
-  color: blue;
+  color: #fff;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+}
+
+p {
+  position: relative;
+  top: 200px;
+  margin: 20px auto;
+  color: #fff;
+  z-index: -1;
+  padding: 0;
+  text-align: center;
+}
+
+#incoming {
+  position: relative;
+  font-size: 50px;
+  top: 200px;
+  margin: 20px auto;
+  color: #fff;
+  z-index: 11;
+  padding: 0;
+  text-align: center;
+}
+
+#scoreboard {
+  position: fixed;
+  display: inline-block;
+  border: 5px solid #ffcc00;
+  margin: 0 auto;
+  left: 150px;
+  top: 50px;
+  width: 200px;
+  font: #fff;
 }
 
 div.mainArea {
@@ -18,7 +53,6 @@ div.mainArea {
   border: 10px solid #ffcc00;
   position: relative;
   overflow: hidden;
-
 }
 
 ul {
@@ -120,12 +154,7 @@ ul {
 .lowLayer {
 }
 
-#scoreBoard {
-  display: inline-block;
-  margin: 0 auto;
-  float:left;
-  width: 200px;
-}
+
 
 .gameOverMessage{
   position: relative;
@@ -137,6 +166,4 @@ ul {
 .explode{
   background-image: url("http://cdn.movieweb.com/img.news.tops/NEJHQecBKaAkNJ_1_b.jpg");
 }
-
-
 

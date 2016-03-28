@@ -1,7 +1,41 @@
 $(function(){
   $("body").keyup(keyAction);
   createBaddies();
+  // startSequence();
 });
+
+function startSequence(){
+  $(".baddie").fadeOut(0);
+  $("#incoming").fadeOut(0);
+  $("#ties").fadeOut(0);
+  $("p").fadeOut(0);
+  $("#player").fadeIn(2000);
+
+  $("#player").animate({
+    left: "400"
+  }, 1000);
+  $("#player").animate({
+    left: "0"
+  }, 1000);
+  $("#player").animate({
+    left: "250"
+  }, 1500);
+  // $("mainArea").animate({
+  //   borderWidth: "10px"
+  // }, 2000);
+
+
+
+  // $(".baddie").fadeIn(1000);
+}
+
+function tiesIncoming(){
+  ($("#ties").fadeIn(1000));
+  ($("#ties").fadeOut(1000));
+  setTimeout($("#incoming").fadeIn(1000),2000);
+
+
+}
 
 function collision($div1, $div2) {
   var x1 = $div1.offset().left;
@@ -21,8 +55,25 @@ function collision($div1, $div2) {
   return true;
 }
 
- 
-var game = game || {};
+function blasterCollision($div1, $div2) {
+  var x1 = $div1.offset().left;
+  var y1 = $div1.offset().top;
+  var h1 = $div1.outerHeight(true);
+  var w1 = $div1.outerWidth(true);
+  var b1 = y1 + h1 + 20;
+  var r1 = x1 + w1 + 20;
+  var x2 = $div2.offset().left;
+  var y2 = $div2.offset().top;
+  var h2 = $div2.outerHeight(true);
+  var w2 = $div2.outerWidth(true);
+  var b2 = y2 + h2 + 20;
+  var r2 = x2 + w2 + 20;
+
+  if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
+  return true;
+}
+
+  var game = game || {};
 
 // var collision = game.bullet - game.bad1Pos;
 
@@ -195,17 +246,19 @@ gridDown = function () {
 
   //MOVE PLAYER
   function movePlayer(direction) {
+    $("#player").stop();
+
     if (direction == "37") {
       $("#player").animate({
-        left: "-=20"
-      }, 50);
+        left: "-=50"
+      }, 100);
       player.position -= 5;
     }
 
     if (direction == "39") {
       $("#player").animate({
-        left: "+=20"
-      }, 50);
+        left: "+=50"
+      }, 100);
       player.position += 5;
     }
     var playerPos = $('#player').position();
@@ -221,33 +274,39 @@ gridDown = function () {
 
   //DIFFERENT WEAPONS!
   function fireBazooka() {
+    console.log("SPACE for fire");
+    var $bullet = createBullet();
 
-      console.log("SPACE for fire");
-      var $bullet = createBullet();
+    $bullet.css("background-color", "#1affff");
 
-      $bullet.css("background-color", "#1affff");
+    $bullet.animate({
+      top: "-800",
+      backgroundColor: "#1affff",
 
-      $bullet.animate({
-        top: "-800",
-        backgroundColor: "#1affff",
+      width: "+=5",
+      height: "+=5"
+    }, {
+      duration: 2000,
+      step: function(){
+        $(".baddie").each(function(index, baddie) {
+          var $baddie = $(baddie);
+          if (collision($bullet, $baddie)) {
+            $bullet.remove();
+            $baddie.remove();
+            // game.currentScore++;
+            var score = parseFloat(game.player1Score.html());
+            score++;
+            game.player1Score.html(score);
+          } 
 
-        width: "+=5",
-        height: "+=5"
-      }, {
-        duration: 2000,
-        step: function(){
-          $(".baddie").each(function(index, baddie) {
-            var $baddie = $(baddie);
-            if (collision($bullet, $baddie)) {
-              $bullet.remove();
-              $baddie.remove();
-              game.currentScore++;
-            } setTimeout(function() {$bullet.remove()}, 1000);
-          });
-        }
-      });
+          setTimeout(function() {
+            $bullet.remove()}, 1000
+          );
+        });
+      }
+    });
 
-          game.delayFire = 150;
+        game.delayFire = 150;
 
   }
 
@@ -262,7 +321,7 @@ gridDown = function () {
       console.log("BOOM");
       var $blaster = createBlaster();
 
-      $blaster.css("background-color", "#red");
+      $blaster.css("background-color", "green");
 
       $blaster.animate({
         top: "-800",
@@ -275,12 +334,19 @@ gridDown = function () {
         step: function(){
           $(".baddie").each(function(index, baddie) {
             var $baddie = $(baddie);
-            if (collision($blaster, $baddie)) {
-              $blaster.remove();
+            if (blasterCollision($blaster, $baddie)) {
+              // $blaster.remove();
               $baddie.addClass("explode")
               setTimeout($baddie.remove(), 500);
-              game.currentScore++;
-            } setTimeout(function() {$blaster.remove()}, 1000);
+              // game.currentScore++;
+              var score = parseFloat(game.player1Score.html());
+              score++;
+              game.player1Score.html(score);
+            } 
+
+            setTimeout(function() {
+              $blaster.remove()
+            }, 1000);
           });
         }
       });
@@ -308,9 +374,9 @@ gridDown = function () {
     var $bomb = createBomb();
     $bomb.css("color", "red");
     $bomb.animate({
-      top: "+600"
+      top: "+300"
     }, {
-    duration: 2000, 
+    duration: 4000, 
     step: function(){
         var $player = $(player);
         if (collision($bomb, $player)) {
@@ -319,7 +385,7 @@ gridDown = function () {
           game.playerHealth--;
           $player.fadeIn(500);
         } setTimeout(function() {$bomb.remove()}, 2000);
-    }
+      }
     })
   }
   
@@ -351,9 +417,10 @@ gridDown = function () {
               if (collision($player, $baddie)) {
                 game.gameOver = true;
                 console.log("GAMEOVER!");
-                setTimeout(function() {$player.fadeOut(1000); $(".baddie").each(function(index,baddie){
-                  var $baddie = $(baddie)
-                  $baddie.fadeOut(1000)}, 100)
+                setTimeout(function() {
+                  $player.fadeOut(1000); $(".baddie").each(function(index,baddie){
+                    var $baddie = $(baddie)
+                    $baddie.fadeOut(1000)}, 100)
                   }) 
                 }
               });
@@ -362,7 +429,7 @@ gridDown = function () {
    function resetGrid(){
       clearBaddies();
      createBaddies();
-     game.player.fadeIn(1000);
+     game.player.fadeIn(3000);
      var left = 0;
      var top  = 0;
   
