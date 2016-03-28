@@ -114,37 +114,6 @@ function startSettings (){
   game.gunFires       = true;
 }
 
-//$score = parseInt($score)
-// var $scoreMessage  = $("<li class='score'>You scored" + $score + "!</li>");
-// var $score = game.currentScore;
-// setTimeout(function() {$(".mainArea").text($score).fadeIn(1000)},0);
-
-// if(game.moveCount%2 == 0){
-//   game.player1Score = $score;
-//   $("#player1Score").text(game.player1Score);
-//   } else if (game.moveCount%2 == 1){
-//     game.player2Score = $score;
-//     $("#player2Score").text(game.player2Score);
-//   }
-
-// function nextRound(){
-//   //show time to reset
-//   //write next player get ready for launch
-//   //change player
-//   game.gameOver = false;
-//   levelUp();
-//   $("mainArea").remove($gameOverMessage)
-// }
-
-// function levelUp(){
-//   //change player()
-//   //up the speed and numbers of baddies/bombs
-// }
-
-function clearBaddies(){
-  $(".baddie").remove();
-}
-
 
 function createBaddies(){
 
@@ -175,47 +144,11 @@ function createBaddies(){
 }
 
 
-//BADDIE MOVEMENT
-gridDown = function () {
-  if(game.baddiesMove === true){
-  $(".grid").animate({
-    "top": "+=100px" }, 1000);
-    console.log("dropdown");
-    gameOver();
-    checkGameOver();
-  } else {$(".grid").stop().clearQueue()}
-  };
 
-  gridSwitch1 = function(){
-    $(".grid").animate({
-      "left": "+10px"
-    }, 0);
-    $(".midLayer").animate({
-      "left": "=-10px"
-    }, 50);
-    $(".lowLayer").animate({
-      "left": "=+10px"
-    }, 50);
-  };
 
-  gridSwitch2 = function(){
-    $(".grid").animate({
-      "left": "-10px"
-    }, 0);
-    $(".midLayer").animate({
-      "left": "=+10px"
-    }, 50);
-    $(".lowLayer").animate({
-      "left": "=-10px"
-    }, 50);
-  };
-
-  //TIMERS
+  //TIMERS 
   setInterval(gridDown, 5000);
-
   setInterval(dropBombs, 1000)
-
-
   // setTimeout(gridSwitch1, 1500)
   // setInterval(gridSwitch2, 3000)
   // setInterval(gridSwitch2, 4500)
@@ -265,14 +198,50 @@ gridDown = function () {
     console.log(Number(playerPos.left));
   }
 
+  //BADDIE MOVEMENT
+  gridDown = function () {
+    if(game.baddiesMove === true){
+    $(".grid").animate({
+      "top": "+=100px" }, 1000);
+      console.log("dropdown");
+      gameOver();
+      checkGameOver();
+    } else {$(".grid").stop().clearQueue()}
+    };
 
+    gridSwitch1 = function(){
+      $(".grid").animate({
+        "left": "+10px"
+      }, 0);
+      $(".midLayer").animate({
+        "left": "=-10px"
+      }, 50);
+      $(".lowLayer").animate({
+        "left": "=+10px"
+      }, 50);
+    };
+
+    gridSwitch2 = function(){
+      $(".grid").animate({
+        "left": "-10px"
+      }, 0);
+      $(".midLayer").animate({
+        "left": "=+10px"
+      }, 50);
+      $(".lowLayer").animate({
+        "left": "=-10px"
+      }, 50);
+    };
+
+
+//WEAPONS!
+//Add weapon sounds
   function createBullet() {
     var bullet = $("<div class='bullet'></div>");
     $("#gun").append(bullet);
     return bullet;
   }
 
-  //DIFFERENT WEAPONS!
   function fireBazooka() {
     console.log("SPACE for fire");
     var $bullet = createBullet();
@@ -388,9 +357,8 @@ gridDown = function () {
       }
     })
   }
-  
 
-
+  //GAME END
   function checkGameOver(){
     if(game.gameOver == true) {
       console.log("game is over")
@@ -409,7 +377,6 @@ gridDown = function () {
     setTimeout(resetGrid, 1000);
   }
 
-  //Game End
   function gameOver (){
             $(".baddie").each(function(index, baddie) {
               var $player = $(player);
@@ -425,6 +392,10 @@ gridDown = function () {
                 }
               });
             };
+
+    function clearBaddies(){
+      $(".baddie").remove();
+    }
 
    function resetGrid(){
       clearBaddies();
@@ -450,6 +421,33 @@ gridDown = function () {
     game.start();
   });
 
+
+  //$score = parseInt($score)
+  // var $scoreMessage  = $("<li class='score'>You scored" + $score + "!</li>");
+  // var $score = game.currentScore;
+  // setTimeout(function() {$(".mainArea").text($score).fadeIn(1000)},0);
+
+  // if(game.moveCount%2 == 0){
+  //   game.player1Score = $score;
+  //   $("#player1Score").text(game.player1Score);
+  //   } else if (game.moveCount%2 == 1){
+  //     game.player2Score = $score;
+  //     $("#player2Score").text(game.player2Score);
+  //   }
+
+  // function nextRound(){
+  //   //show time to reset
+  //   //write next player get ready for launch
+  //   //change player
+  //   game.gameOver = false;
+  //   levelUp();
+  //   $("mainArea").remove($gameOverMessage)
+  // }
+
+  // function levelUp(){
+  //   //change player()
+  //   //up the speed and numbers of baddies/bombs
+  // }
 // ??TURN COUNTER
 
 //// function playerTurn() {
