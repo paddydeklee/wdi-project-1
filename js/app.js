@@ -22,16 +22,6 @@ function collision($div1, $div2) {
 }
 
  
-//get the mouse pos on the page
-$(this).on("mousemove", function(event) {
-  $("#mousePosition").text("pageX: " + event.pageX + ", pageY: " + event.pageY );
-});
-
-//get the key that has been pressed
-$(this).on("keydown", function( event ) {
-  $("#log").html(event.type + ": " +  event.which );
-});
-
 var game = game || {};
 
 // var collision = game.bullet - game.bad1Pos;
@@ -50,56 +40,58 @@ game.start = function(){
   this.gunFires       = false;
   this.currentPlayer  = 0;
   this.currentScore   = 0;
-
+  this.playerHealth   = 5;
 }
 
 
+function player1HighScore(){
+  var playerOneScores = []
+  playerOneScores.push(thisPlayerOneScore)
+  playerOneScores.sort().reverse()
+  p1highScore = playerOneScores[0]
+}
+
+function player2HighScore(){
+  var playerTwoScores = []
+  playerTwoScores.push(thisPlayerTwoScore)
+  playerTwoScores.sort().reverse()
+  p2highScore = playerTwoScores[0]
+}
 
 function startSettings (){
   game.baddiesMove    = true;
   game.gunFires       = true;
 }
 
-function checkGameOver(){
-  if(game.gameOver == true){
-    console.log("game is over")
-    var $gameOverMessage  = $("<li class='gameOverMessage'>GAME OVER</li>");
-    var $score = game.currentScore;
-    $score = parseInt($score)
-    // var $scoreMessage  = $("<li class='score'>You scored" + $score + "!</li>");
-    setTimeout(function() {$(".mainArea").append($gameOverMessage).fadeIn(1000)},0);
-    setTimeout(function() {$(".mainArea").append($score).fadeIn(1000)},0);
-    if(game.moveCount%2 == 0){
-      game.player1Score = $score;
-      $("#player1Score").html(game.player1Score);
-      } else if (game.moveCount%2 == 1){
-        game.player2Score = $score;
-        $("#player2Score").html(game.player2Score);
-      }
-    gameOverSettings();
-  }
-}
+//$score = parseInt($score)
+// var $scoreMessage  = $("<li class='score'>You scored" + $score + "!</li>");
+// var $score = game.currentScore;
+// setTimeout(function() {$(".mainArea").text($score).fadeIn(1000)},0);
 
-function nextRound(){
-  //show time to reset
-  //write next player get ready for launch
-  //change player
-  game.gameOver = false;
-  levelUp();
-  $("mainArea").remove($gameOverMessage)
-}
+// if(game.moveCount%2 == 0){
+//   game.player1Score = $score;
+//   $("#player1Score").text(game.player1Score);
+//   } else if (game.moveCount%2 == 1){
+//     game.player2Score = $score;
+//     $("#player2Score").text(game.player2Score);
+//   }
 
-function levelUp(){
-  //change player()
-  //up the speed and numbers of baddies/bombs
-}
+// function nextRound(){
+//   //show time to reset
+//   //write next player get ready for launch
+//   //change player
+//   game.gameOver = false;
+//   levelUp();
+//   $("mainArea").remove($gameOverMessage)
+// }
 
-function gameOverSettings(){
-  game.moveCount++;
-  game.gameOver         = true;
-  game.playerTurn       = false;
-  game.baddiesMove      = false;
-  setTimeout(resetGrid, 1000);
+// function levelUp(){
+//   //change player()
+//   //up the speed and numbers of baddies/bombs
+// }
+
+function clearBaddies(){
+  $(".baddie").remove();
 }
 
 
@@ -111,7 +103,7 @@ function createBaddies(){
   var left = 0;
   var top  = 0;
   for (var i = 0; i < numberOfBaddies; i++) {
-    var $baddie = $("<li class='baddie'></div>");
+    var $baddie = $("<li class='baddie'><img src='http://www.afewmaneuvers.com/uploads/emoticons/default_TIE%20Bomber.gif'></li>");
 
     $baddie
       .css("left", left)
@@ -130,27 +122,6 @@ function createBaddies(){
   }
   }
 }
-
-function resetGrid(){
-  var numberOfBaddies = 0;
-  console.log("reset Grid:" + numberOfBaddies)
-  createBaddies();
-  game.player.fadeIn(1000);
-  var left = 0;
-  var top  = 0;
-
-    var $grid = $(".grid");
-
-    $grid
-      .css("left", left)
-      .css("top", top);
-
-    setTimeout($(".gameOverMessage").remove(), 3000);
-    setTimeout($(".score").remove(), 3000);
-
-
-};
-
 
 
 //BADDIE MOVEMENT
@@ -189,7 +160,9 @@ gridDown = function () {
   };
 
   //TIMERS
-  setInterval(gridDown, 500);
+  setInterval(gridDown, 5000);
+
+  setInterval(dropBombs, 1000)
 
 
   // setTimeout(gridSwitch1, 1500)
@@ -205,8 +178,11 @@ gridDown = function () {
     console.log(keycode);
 
     switch(keycode) {
-      case 32: // space
+      case 38: // up key
         fireBazooka();       
+        break;
+      case 32 : // space
+        fireBlaster();       
         break;
       case 37:
         movePlayer(keycode); // left;
@@ -249,11 +225,12 @@ gridDown = function () {
       console.log("SPACE for fire");
       var $bullet = createBullet();
 
-      $bullet.css("background-color", "red");
+      $bullet.css("background-color", "#1affff");
 
       $bullet.animate({
         top: "-800",
-        backgroundColor: "red",
+        backgroundColor: "#1affff",
+
         width: "+=5",
         height: "+=5"
       }, {
@@ -274,6 +251,97 @@ gridDown = function () {
 
   }
 
+  function createBlaster() {
+    var blaster = $("<div class='blaster'></div>");
+    $("#gun").append(blaster);
+    return blaster;
+  }
+
+  function fireBlaster() {
+
+      console.log("BOOM");
+      var $blaster = createBlaster();
+
+      $blaster.css("background-color", "#red");
+
+      $blaster.animate({
+        top: "-800",
+        backgroundColor: "#red",
+        
+        width: "+=20",
+        height: "+=20"
+      }, {
+        duration: 2000,
+        step: function(){
+          $(".baddie").each(function(index, baddie) {
+            var $baddie = $(baddie);
+            if (collision($blaster, $baddie)) {
+              $blaster.remove();
+              $baddie.addClass("explode")
+              setTimeout($baddie.remove(), 500);
+              game.currentScore++;
+            } setTimeout(function() {$blaster.remove()}, 1000);
+          });
+        }
+      });
+
+          game.delayFire = 150;
+
+  }
+
+
+  function createBomb() {
+    var bomb   = $("<li class='bomb'></li>");
+    var bomber = $('li').get(Math.floor(Math.random() * 50))
+    $(bomber).append(bomb);
+    return bomb;
+    // $bomb.animate({
+    //   width: "+=20",
+    //   height: "+=20"
+    // }, {
+    //   duration: 1000
+    // })
+    }
+  
+  function dropBombs(){
+
+    var $bomb = createBomb();
+    $bomb.css("color", "red");
+    $bomb.animate({
+      top: "+600"
+    }, {
+    duration: 2000, 
+    step: function(){
+        var $player = $(player);
+        if (collision($bomb, $player)) {
+          $bomb.remove();
+          $player.fadeOut(500);
+          game.playerHealth--;
+          $player.fadeIn(500);
+        } setTimeout(function() {$bomb.remove()}, 2000);
+    }
+    })
+  }
+  
+
+
+  function checkGameOver(){
+    if(game.gameOver == true) {
+      console.log("game is over")
+      var $gameOverMessage  = $("<li class='gameOverMessage'>GAME OVER</li>");
+      setTimeout(function() {$(".mainArea").append($gameOverMessage).fadeIn(1000)},0);
+      gameOverSettings();
+    }
+    game.gameOver = 0;
+  }
+
+  function gameOverSettings(){
+    game.moveCount++;
+    game.gameOver         = true;
+    game.playerTurn       = false;
+    game.baddiesMove      = false;
+    setTimeout(resetGrid, 1000);
+  }
 
   //Game End
   function gameOver (){
@@ -281,7 +349,6 @@ gridDown = function () {
               var $player = $(player);
               var $baddie = $(baddie);
               if (collision($player, $baddie)) {
-                game.baddiesMove = 0;
                 game.gameOver = true;
                 console.log("GAMEOVER!");
                 setTimeout(function() {$player.fadeOut(1000); $(".baddie").each(function(index,baddie){
@@ -291,6 +358,23 @@ gridDown = function () {
                 }
               });
             };
+
+   function resetGrid(){
+      clearBaddies();
+     createBaddies();
+     game.player.fadeIn(1000);
+     var left = 0;
+     var top  = 0;
+  
+      var $grid = $(".grid");
+  
+      $grid
+        .css("left", left)
+        .css("top", top);
+  
+      $(".gameOverMessage").remove();
+      $(".score").remove();
+     };
 
 
 
