@@ -39,6 +39,11 @@ var game = game || {};
 game.start = function(){
   this.player1Score   = 0;
   this.player2Score   = 0;
+  this.gameOver       = false;
+  this.playerTurn     = false;
+  this.moveCount      = 1;
+  this.baddiesMove    = false;
+  this.gunFires       = false;
 
   // this.player         = $("#player");
   // this.delayFire      = 0;
@@ -57,6 +62,37 @@ game.start = function(){
 
 }
 
+// function playerTurn() {
+// if (this.moveCount % 2 === 0) {
+//   this.playMove(this.oMoves, "O");
+// } else {
+//   this.playMove(this.xMoves, "X");
+// }
+// }
+
+function startSettings (){
+  game.baddiesMove    = true;
+  game.gunFires       = true;
+}
+
+function checkGameOver(){
+  if(game.gameOver == true){
+    console.log("game is over")
+    var $gameOverMessage  = $("<li class='gameOverMessage'>GAME OVER</div>");
+    setTimeout(function() {$(".mainArea").append($gameOverMessage).fadeIn(1000)},500);
+    gameOverSettings();
+  }
+}
+
+function gameOverSettings(){
+  game.moveCount++;
+  game.baddiesMove      = false;
+  game.gameOver         = true;
+  game.playerTurn       = false;
+  game.baddiesMove      = false;
+}
+
+
 function createBaddies(){
   var numberOfBaddies = 50;
   var container = $(".mainArea");
@@ -73,7 +109,7 @@ function createBaddies(){
     left += 50;
     if (left > container.width() - 10) {
       left = 0;
-      top += 50;
+      top += 30;
     }
     if(top > 50){
     $($baddie).addClass("midLayer")
@@ -87,10 +123,13 @@ function createBaddies(){
 
 //BADDIE MOVEMENT
 gridDown = function () {
+  if(game.baddiesMove === true){
   $(".grid").animate({
-    "top": "+=25px" }, 1000);
+    "top": "+=100px" }, 1000);
     console.log("dropdown");
     gameOver();
+    checkGameOver();
+  }
   };
 
   gridSwitch1 = function(){
@@ -118,21 +157,24 @@ gridDown = function () {
   };
 
   //TIMERS
-  setInterval(gridDown, 5000);
-  setTimeout(gridSwitch1, 1500)
-  setInterval(gridSwitch2, 3000)
-  setInterval(gridSwitch2, 4500)
-  setInterval(gridSwitch1, 6000)
-  setInterval(gridSwitch1, 7500)
+  setInterval(gridDown, 500);
+
+
+  // setTimeout(gridSwitch1, 1500)
+  // setInterval(gridSwitch2, 3000)
+  // setInterval(gridSwitch2, 4500)
+  // setInterval(gridSwitch1, 6000)
+  // setInterval(gridSwitch1, 7500)
 
   //SET UP KEYS
   function keyAction(){
+    startSettings();
     var keycode = event.keyCode || event.which;
     console.log(keycode);
 
     switch(keycode) {
       case 32: // space
-        fireBazooka();
+        fireBazooka();       
         break;
       case 37:
         movePlayer(keycode); // left;
@@ -144,8 +186,6 @@ gridDown = function () {
   }
 
   //MOVE PLAYER
-
-  
   function movePlayer(direction) {
     if (direction == "37") {
       $("#player").animate({
@@ -182,10 +222,10 @@ gridDown = function () {
       $bullet.animate({
         top: "-800",
         backgroundColor: "red",
-        width: "+=10",
-        height: "+=10"
+        width: "+=5",
+        height: "+=5"
       }, {
-        duration: 800,
+        duration: 2000,
         step: function(){
           $(".baddie").each(function(index, baddie) {
             var $baddie = $(baddie);
@@ -205,15 +245,21 @@ gridDown = function () {
   //Game End
   function gameOver (){
             $(".baddie").each(function(index, baddie) {
-              var $player = $(player)
+              var $player = $(player);
               var $baddie = $(baddie);
               if (collision($player, $baddie)) {
+                game.gameOver = true;
                 console.log("GAMEOVER!");
-                setTimeout(function() {$player.remove(); $baddie.remove()}, 100)
-
-              }
-              }) ;
+                setTimeout(function() {$player.fadeOut(1000); $(".baddie").each(function(index,baddie){
+                  var $baddie = $(baddie)
+                  $baddie.fadeOut(1000)}, 100)
+                  console.log("GAMEOVER!");
+                  }) 
+                }
+              });
             };
+
+
 
 
   document.addEventListener("DOMContentLoaded", function(){

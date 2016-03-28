@@ -13,7 +13,6 @@ div.mainArea {
   padding: 10px;
   border: 1px solid black;
   position: relative;
-  clear: both;
 }
 
 ul {
@@ -25,10 +24,10 @@ ul {
 }
 
 .baddie {
-  width:  30px;
-  height: 30px;
-  margin: 3px;
-  border: 1px solid black;
+  width:  20px;
+  height: 20px;
+  margin: 0px;
+  border: 0px solid black;
   padding: 0px;
   position: absolute;
   list-style-type: none;
@@ -72,8 +71,8 @@ ul {
 .bullet {
   position: relative;
   margin:0 auto;
-  width:10px;
-  height:10px;
+  width:5px;
+  height:5px;
   background: black;
   z-index: 0;
   color: #fff;
@@ -87,4 +86,16 @@ ul {
  background-color: green;
 }
 
+#scoreBoard {
+  display: inline-block;
+  margin: 0 auto;
+  float:left;
+  width: 200px;
+}
 
+.gameOverMessage{
+  position: relative;
+  margin: 100px auto;
+  font-size: 100px;
+  list-style-type: none;
+}
