@@ -23,6 +23,12 @@ p {
   text-align: center;
 }
 
+#gameOverMessage{
+  position:relative;
+  text-align: center;
+  margin: 20px auto;
+}
+
 #incoming {
   position: relative;
   font-size: 50px;
@@ -34,16 +40,17 @@ p {
   text-align: center;
 }
 
-/*#noMoreAmmo {
-  position: relative;
+#noMoreAmmo {
+  position: fixed;
   font-size: 20px;
+  left: 520px;
   top: 400px;
   margin: 0px auto;
-  color: #fff;
+  color: rgba(255,255,255,0.3);
   z-index: 11;
   padding: 0;
   text-align: center;
-}*/
+}
 
 #scoreboard {
   position: fixed;

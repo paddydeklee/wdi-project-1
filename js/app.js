@@ -1,7 +1,14 @@
 $(function(){
   $("body").keyup(keyAction);
   createBaddies();
-  // startSequence();
+
+  window.addEventListener("keydown", function(e) {
+      // space and arrow keys
+      if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+          e.preventDefault();
+      }
+  }, false);
+
 });
 
 function startSequence(){
@@ -34,6 +41,7 @@ function tiesIncoming(){
   ($("#ties").fadeIn(1000));
   ($("#ties").fadeOut(1000));
   setTimeout($("#incoming").fadeIn(1000),2000);
+  playTieFighter();
 
 
 }
@@ -95,13 +103,20 @@ game.start = function(){
   this.playerHealth   = $("#playerHealth")
   this.shield         = 5;
   this.blasters       = $("#blasters");
+  this.blastersLeft   = 5;
+  this.dropBombs      = false;
 }
 
 
-// 
+function pauseSettings() {
+game.dropBombs = false;
+}
+
 function startSettings (){
   game.baddiesMove    = true;
   game.gunFires       = true;
+  game.dropBombs      = true;
+
 }
 
 function clearBaddies(){
@@ -129,34 +144,27 @@ function createBaddies(){
       left = 0;
       top += 30;
     }
-    if(top > 50){
+    if(top > 20){
     $($baddie).addClass("midLayer")
-  } if (top > 150){
+  } if (top > 40){
     $($baddie).addClass("lowLayer")
   }
   }
 }
 
 function messageAmmo(){
-var $noMoreAmmo = $("<p id='noMoreAmmo'>We're out of blasters!></p>");
-var left = 100;
-var top  = 500;
-
-$noMoreAmmo
-  .css("left", left)
-  .css("top", top);
-
-$(".grid").append($noMoreAmmo);
+  var $noMoreAmmo = $("<p id='noMoreAmmo'>We're out of blasters!</p>");
+  $(".grid").append($noMoreAmmo);
+  $("#noMoreAmmo").fadeOut(1000)
 }
 
 //BADDIE MOVEMENT
-gridDown = function () {
+function gridDown() {
   if(game.baddiesMove === true){
   $(".grid").animate({
     "top": "+=100px" }, 1000);
     console.log("dropdown");
-    gameOver();
-    checkGameOver();
+    gameOver2();
   } else {$(".grid").stop().clearQueue()}
   };
 
@@ -184,12 +192,10 @@ gridDown = function () {
     }, 50);
   };
 
-  //TIMERS
+  //INPLAY TIMERS
   setInterval(gridDown, 5000);
 
-  setInterval(dropBombs, 1000)
-
-
+  setInterval(dropBombs, 1000);
   // setTimeout(gridSwitch1, 1500)
   // setInterval(gridSwitch2, 3000)
   // setInterval(gridSwitch2, 4500)
@@ -200,6 +206,7 @@ gridDown = function () {
   function keyAction(){
     startSettings();
     var keycode = event.keyCode || event.which;
+    event.preventDefault();
     console.log(keycode);
 
     switch(keycode) {
@@ -207,10 +214,12 @@ gridDown = function () {
         fireBazooka();       
         break;
       case 32 : // space
-      if (game.shield >= 1){
+      if (game.blastersLeft >= 1){
         fireBlaster();     
         }  else {
-          console.log("no more lazers!")
+          messageAmmo();
+          playChewyRoar();
+          console.log("no blasters left!")
         }
         break;
       case 37:
@@ -254,7 +263,7 @@ gridDown = function () {
   function fireBazooka() {
     console.log("SPACE for fire");
     var $bullet = createBullet();
-
+    playLaser();
     $bullet.css("background-color", "#1affff");
 
     $bullet.animate({
@@ -296,42 +305,40 @@ gridDown = function () {
 
   function fireBlaster() {
 
-      console.log("BOOM");
       var $blaster = createBlaster();
+      playBlasterRelease2();
 
       //Reduce Ammo
       var blasters = parseFloat($("#blasters").html());
       blasters--;
-      game.shield--;
+      game.blastersLeft--;
       game.blasters.html(blasters); 
 
 
       $blaster.css("background-color", "green");
 
       $blaster.animate({
-        top: "-800",
+        top: "-600",
         backgroundColor: "#red",
         
         width: "+=20",
         height: "+=20"
       }, {
-        duration: 2000,
+        duration: 3000,
         step: function(){
           $(".baddie").each(function(index, baddie) {
             var $baddie = $(baddie);
             if (blasterCollision($blaster, $baddie)) {
+              playBlasterImpact();
               // $blaster.remove();
               $baddie.addClass("explode")
-              setTimeout($baddie.remove(), 500);
+              setTimeout($baddie.remove(), 1000);
               // game.currentScore++;
-              var score = parseFloat(game.player1Score.html());
-              score++;
-              game.player1Score.html(score);
             } 
 
             setTimeout(function() {
               $blaster.remove()
-            }, 1000);
+            }, 2000);
           });
         }
       });
@@ -355,7 +362,9 @@ gridDown = function () {
     }
   
   function dropBombs(){
+    if(game.dropBombs == true){
     var $bomb = createBomb();
+    playBlasterRelease();
     $bomb.css("color", "red");
     $bomb.animate({
       top: "+800"
@@ -377,68 +386,144 @@ gridDown = function () {
         } setTimeout(function() {$bomb.remove()}, 4000);
       }
     })
+   }
   }
   
-  function checkGameOver(){
-    if(game.gameOver == true) {
-      console.log("game is over")
-      var $gameOverMessage  = $("<li class='gameOverMessage'>GAME OVER</li>");
-      setTimeout(function() {$(".mainArea").append($gameOverMessage).fadeIn(1000)},0);
-      gameOverSettings();
-    }
-    game.gameOver = 0;
+
+//Game End
+function gameOver (){
+  $(".baddie").each(function(index, baddie) {
+    var $player = $(player);
+    var $baddie = $(baddie);
+    // var $grid = $(grid);
+
+     if (collision($player, $baddie) || game.shield < 1) {
+       $(".grid").stop().clearQueue()
+       game.gameOver = true;
+       $player.fadeOut(1000); 
+       // $grid.fadeOut(1000);
+
+       $(".baddie").each(function(index,baddie){
+         $baddie.fadeOut(1000)
+         }) 
+       }
+     });
+   };
+
+setInterval(gameOver, 1000);
+
+function gameOver2(){
+  if(game.gameOver == true) {
+    var $gameOverMessage  = $("<li class='gameOverMessage'>GAME OVER</li>");
+    $(".mainArea").append($gameOverMessage).fadeIn(1000);
+    //play darth noise
+    $gameOverMessage.fadeOut(4000);
+    gameOverSettings();
+    setTimeout(resetGame, 6000);
+  }
+}
+
+function gameOverSettings(){
+  game.baddiesMove = false;
+  game.dropBombs   = false;
+}
+
+function resetGame(){
+  game.gameOver = 0;
+  resetBaddies();
+  resetWeapons();
+  resetPlayerHealth(); 
+}
+
+function resetBaddies(){
+   game.blastersLeft   = 5;
+   clearBaddies();
+  createBaddies();
+  game.player.fadeIn(3000);
+  var left = 0;
+  var top  = 0;
+  
+  var $grid = $(".grid");
+  
+  $grid
+    .css("left", left)
+    .css("top", top);
+  
+  $(".gameOverMessage").remove();
+  $(".score").remove();
+  };
+
+//Need to turn bombs off at the start of the game
+
+function resetWeapons(){
+  var blasters = parseFloat($("#blasters").html());
+  blasters = 5;
+  game.blastersLeft = 5;
+  game.blasters.html(blasters); 
+}
+
+function resetPlayerHealth(){
+  var playerHealth = parseFloat(game.playerHealth.html());
+  playerHealth = 5;
+  game.shield = 5;
+  game.playerHealth.html(playerHealth)
+}
+
+//Sounds
+function playLaser(){
+  var audio = document.getElementById("audio");
+  audio.src = ("./sounds/blaster-firing.wav");
+  audio.play();
   }
 
-  function gameOverSettings(){
-    game.moveCount++;
-    game.gameOver         = true;
-    game.playerTurn       = false;
-    game.baddiesMove      = false;
-    setTimeout(resetGrid, 1000);
+function playBlasterImpact(){
+  var audio = document.getElementById("audio");
+  audio.src = ("./sounds/Blaster_Impact.wav");
+  audio.play();
   }
 
-  //Game End
-  function gameOver (){
-            $(".baddie").each(function(index, baddie) {
-              var $player = $(player);
-              var $baddie = $(baddie);
+function playBlasterRelease3(){
+  var audio = document.getElementById("audio");
+  audio.src = ("./sounds/Laser2.wav");
+  audio.play();
+  }
 
-              if (collision($player, $baddie) || game.shield < 1) {
-                $(".grid").stop().clearQueue()
-                game.gameOver = true;
-                console.log("GAMEOVER!");
-                setTimeout(function() {
-                  $player.fadeOut(1000); $(".baddie").each(function(index,baddie){
-                    var $baddie = $(baddie)
-                    $baddie.fadeOut(1000)}, 100)
-                  }) 
-                }
-              });
-            };
+function playBlasterRelease(){
+  var audio = document.getElementById("audio");
+  audio.src = ("./sounds/Blaster_Release.wav");
+  audio.volume=0.5;
+  audio.play();
+  }
 
-   function resetGrid(){
-      clearBaddies();
-     createBaddies();
-     game.player.fadeIn(3000);
-     var left = 0;
-     var top  = 0;
-  
-      var $grid = $(".grid");
-  
-      $grid
-        .css("left", left)
-        .css("top", top);
-  
-      $(".gameOverMessage").remove();
-      $(".score").remove();
-     };
+function playBlasterRelease2(){
+  var audio = document.getElementById("audio");
+  audio.src = ("./sounds/Blaster_Release2.wav");
+  audio.play();
+  }
 
 
+function playChewyRoar(){
+  var audio = document.getElementById("audio3");
+  audio.src = ("./sounds/chewy_roar.wav");
+  audio.play();
+  }
+
+function playKesslRun(){
+  var audio = document.getElementById("audio");
+  audio.src = ("./sounds/kesslrun.wav");
+  audio.play();
+  }
+
+function playTieFighter(){
+  var audio = document.getElementById("audio2");
+  audio.src = ("./sounds/tie_fighter.wav");
+  audio.play();
+  }
 
 
-  document.addEventListener("DOMContentLoaded", function(){
-    game.start();
-  });
+document.addEventListener("DOMContentLoaded", function(){
+  game.start();
+});
 
 
 
