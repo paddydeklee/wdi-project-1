@@ -46,6 +46,7 @@ function enterGame(){
   $(".mainArea").fadeIn(2000);
   setTimeout(enterPlayer, 5000);
   setTimeout(tiesIncoming, 10000);
+  $("#continue").fadeOut(0)
 }
 
 function enterPlayer(){
@@ -68,6 +69,7 @@ function tiesIncoming(){
   ($("#incoming").fadeIn(1000).fadeOut(1000));
   $(".baddie").fadeIn(7000);
   playTieFighter();
+  resetGame();
 }
 
 // function tiesIncoming2(){
@@ -135,18 +137,22 @@ game.start = function(){
   this.blasters       = $("#blasters");
   this.blastersLeft   = 5;
   this.dropBombs      = false;
+  this.grid           = $(".grid")
 }
 
 
 function pauseSettings() {
-game.dropBombs = false;
+  game.dropBombs      = false;
+  game.baddiesMove    = false;
+  $("#continue").fadeIn(50);
+
 }
 
 function startSettings (){
   game.baddiesMove    = true;
   game.gunFires       = true;
   game.dropBombs      = true;
-
+  $("#continue").fadeOut(50);
 }
 
 function clearBaddies(){
@@ -194,7 +200,7 @@ function gridDown() {
   $(".grid").animate({
     "top": "+=100px" }, 1000);
     console.log("dropdown");
-    gameOver2();
+    gameOver();
   } else {$(".grid").stop().clearQueue()}
   };
 
@@ -226,11 +232,11 @@ function gridDown() {
   setInterval(gridDown, 5000);
 
   setInterval(dropBombs, 1000);
-  // setTimeout(gridSwitch1, 1500)
-  // setInterval(gridSwitch2, 3000)
-  // setInterval(gridSwitch2, 4500)
-  // setInterval(gridSwitch1, 6000)
-  // setInterval(gridSwitch1, 7500)
+  setTimeout(gridSwitch1, 1500)
+  setInterval(gridSwitch2, 3000)
+  setInterval(gridSwitch2, 4500)
+  setInterval(gridSwitch1, 6000)
+  setInterval(gridSwitch1, 7500)
 
   //SET UP KEYS
   function keyAction(){
@@ -291,7 +297,6 @@ function gridDown() {
 
   //DIFFERENT WEAPONS!
   function fireBazooka() {
-    console.log("SPACE for fire");
     var $bullet = createBullet();
     playLaser();
     $bullet.css("background-color", "#1affff");
@@ -315,15 +320,13 @@ function gridDown() {
             score++;
             game.player1Score.html(score);
           } 
-
-          setTimeout(
-            $bullet.remove(), 0);
+          // var $bullet = $(bullet);
+          // setTimeout(
+          //   $bullet.remove(), 2000);
         });
       }
     });
-
         game.delayFire = 150;
-
   }
 
   function createBlaster() {
@@ -372,7 +375,7 @@ function gridDown() {
         }
       });
 
-          game.delayFire = 150;
+      game.delayFire = 150;
 
   }
 
@@ -419,18 +422,21 @@ function gridDown() {
   }
   
 
-//Game End
+// //Game End
+// setTimeout(setInterval(gameOver, 2000),8000);
+
 function gameOver (){
   $(".baddie").each(function(index, baddie) {
     var $player = $(player);
     var $baddie = $(baddie);
-    // var $grid = $(grid);
+    var $grid   = $(".grid");
 
-     if (collision($player, $baddie) || game.shield < 1) {
+     if (collision($player, $baddie) || game.shield < 0) {
        $(".grid").stop().clearQueue()
        game.gameOver = true;
        $player.fadeOut(1000); 
-       // $grid.fadeOut(1000);
+       $grid.fadeOut(1000);
+       gameOver2();
 
        $(".baddie").each(function(index,baddie){
          $baddie.fadeOut(1000)
@@ -439,16 +445,14 @@ function gameOver (){
      });
    };
 
-setInterval(gameOver, 1000);
-
 function gameOver2(){
   if(game.gameOver == true) {
     var $gameOverMessage  = $("<li class='gameOverMessage'>GAME OVER</li>");
     $(".mainArea").append($gameOverMessage).fadeIn(1000);
     //play darth noise
-    $gameOverMessage.fadeOut(4000);
+    $gameOverMessage.fadeOut(3000);
     gameOverSettings();
-    setTimeout(resetGame, 6000);
+    setTimeout(resetGame, 3000);
   }
 }
 
@@ -462,6 +466,7 @@ function resetGame(){
   resetBaddies();
   resetWeapons();
   resetPlayerHealth(); 
+  pauseSettings();
 }
 
 function resetBaddies(){
@@ -469,6 +474,7 @@ function resetBaddies(){
    clearBaddies();
   createBaddies();
   game.player.fadeIn(3000);
+  game.grid.fadeIn(3000);
   var left = 0;
   var top  = 0;
   
@@ -502,6 +508,12 @@ function resetPlayerHealth(){
 function playLaser(){
   var audio = document.getElementById("audio");
   audio.src = ("./sounds/blaster-firing.wav");
+  audio.play();
+  }
+
+function playDarth(){
+  var audio = document.getElementById("audio");
+  audio.src = ("./sounds/ALL2EASY.WAV");
   audio.play();
   }
 
