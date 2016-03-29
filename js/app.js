@@ -140,25 +140,9 @@ game.start = function(){
   this.grid           = $(".grid")
 }
 
-
-function pauseSettings() {
-  game.dropBombs      = false;
-  game.baddiesMove    = false;
-  $("#continue").fadeIn(50);
-
-}
-
-function startSettings (){
-  game.baddiesMove    = true;
-  game.gunFires       = true;
-  game.dropBombs      = true;
-  $("#continue").fadeOut(50);
-}
-
 function clearBaddies(){
   $(".baddie").remove();
 }
-
 
 function createBaddies(){
 
@@ -207,25 +191,25 @@ function gridDown() {
   gridSwitch1 = function(){
     $(".grid").animate({
       "left": "+10px"
-    }, 0);
+    }, 100);
     $(".midLayer").animate({
       "left": "=-10px"
-    }, 50);
+    }, 100);
     $(".lowLayer").animate({
       "left": "=+10px"
-    }, 50);
+    }, 100);
   };
 
   gridSwitch2 = function(){
     $(".grid").animate({
       "left": "-10px"
-    }, 0);
+    }, 100);
     $(".midLayer").animate({
       "left": "=+10px"
-    }, 50);
+    }, 100);
     $(".lowLayer").animate({
       "left": "=-10px"
-    }, 50);
+    }, 100);
   };
 
   //INPLAY TIMERS
@@ -444,6 +428,20 @@ function gameOver (){
        }
      });
    };
+
+
+ function pauseSettings() {
+   game.dropBombs      = false;
+   game.baddiesMove    = false;
+   $("#continue").fadeIn(50);
+ }
+
+ function startSettings (){
+   game.baddiesMove    = true;
+   game.gunFires       = true;
+   game.dropBombs      = true;
+   $("#continue").fadeOut(50);
+ }
 
 function gameOver2(){
   if(game.gameOver == true) {
