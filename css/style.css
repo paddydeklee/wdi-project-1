@@ -8,10 +8,35 @@ body {
 
 h1 {
   color: #fff;
+  font-size: 30px;
   margin: 0 auto;
   position: relative;
   text-align: center;
+  z-index: 20;
 }
+
+#star{
+  top: 100px;
+  height: 100px;
+  width: 450px;
+  margin: 20px auto;
+  background-image: url("../assets/star.svg");
+  background-size: cover;
+  border: none;
+}
+
+#wars{
+  top: 100px;
+  height: 100px;
+  width: 450px;
+  margin: 20px auto;
+  background-image: url("../assets/wars.svg");
+  background-size: cover;
+  border: none;
+}
+
+
+
 
 p {
   position: relative;

@@ -18,18 +18,34 @@ function startSequence(){
   $("#incoming").fadeOut(0);
   $("#ties").fadeOut(0);
   $("p").fadeOut(0);
-  $("#player").fadeIn(2000)
+  $("#player").fadeOut(0);
+  $("h1").fadeOut(0);
+  $("#star").fadeOut(0);
+  $("#wars").fadeOut(0);
+  $(".mainArea").fadeOut(0);
+  $("#scoreboard").fadeOut(0);
+
   var audio = new Audio('./sounds/ThemeSong.ogg');
   audio.play();
+  $("#star").fadeIn(2000).fadeOut(5000);
+  $("#wars").fadeIn(2000).fadeOut(5000);
+  $("#title").fadeIn(4000).fadeOut(3000);
+  enterGame();
+}
 
-
-  // $("mainArea").animate({
-  //   borderWidth: "10px"
-  // }, 2000);
-
-
-
-  // $(".baddie").fadeIn(1000);
+function enterGame(){
+  // $("#incoming").fadeIn(2000);
+  // $("#ties").fadeIn(2000);
+  // $("p").fadeIn(2000);
+  // $("#player").fadeIn(2000);
+  $("#star").fadeOut(2000);
+  $("#wars").fadeOut(2000);
+  $(".mainArea").fadeIn(2000);
+  $("#scoreboard").fadeIn(15000);
+  $("#title2").fadeIn(15000);
+  $(".mainArea").fadeIn(2000);
+  setTimeout(enterPlayer, 5000);
+  setTimeout(tiesIncoming, 10000);
 }
 
 function enterPlayer(){
@@ -50,6 +66,7 @@ function enterPlayer(){
 function tiesIncoming(){
   ($("#ties").fadeIn(1000).fadeOut(1000));
   ($("#incoming").fadeIn(1000).fadeOut(1000));
+  $(".baddie").fadeIn(7000);
   playTieFighter();
 }
 
