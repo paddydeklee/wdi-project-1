@@ -185,7 +185,7 @@ ul {
   background: #1affff;
   z-index: 0;
   color: #1affff;
-  box-shadow: box-shadow: 10px 10px 5px #1affff;
+  box-shadow: 10px 10px 5px #1affff;
 }
 
 .blaster {
@@ -196,11 +196,10 @@ ul {
   background: #1affff;
   z-index: 0;
   color: #1affff;
-  box-shadow: box-shadow: 10px 10px 5px #1affff;
+  box-shadow: 10px 10px 5px #1affff;
   border: 10px black;
 }
 
-/*add box shadows*/
 .bomb {
   position: relative;
   margin:0 auto;
@@ -216,13 +215,12 @@ ul {
 .lowLayer {
 }
 
-
-
 .gameOverMessage{
   position: relative;
-  margin: 100px auto;
+  margin: 200px auto;
   font-size: 100px;
   list-style-type: none;
+  text-align: center;
 }
 
 .explode{
