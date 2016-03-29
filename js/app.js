@@ -1,6 +1,8 @@
 $(function(){
   $("body").keyup(keyAction);
   createBaddies();
+  startSequence();
+  // audio.loop = true;
 
   window.addEventListener("keydown", function(e) {
       // space and arrow keys
@@ -16,7 +18,21 @@ function startSequence(){
   $("#incoming").fadeOut(0);
   $("#ties").fadeOut(0);
   $("p").fadeOut(0);
+  $("#player").fadeIn(2000)
+  var audio = new Audio('./sounds/ThemeSong.ogg');
+  audio.play();
 
+
+  // $("mainArea").animate({
+  //   borderWidth: "10px"
+  // }, 2000);
+
+
+
+  // $(".baddie").fadeIn(1000);
+}
+
+function enterPlayer(){
   $("#player").fadeIn(2000);
 
   $("#player").animate({
@@ -28,23 +44,20 @@ function startSequence(){
   $("#player").animate({
     left: "250"
   }, 1500);
-  // $("mainArea").animate({
-  //   borderWidth: "10px"
-  // }, 2000);
-
-
-
-  // $(".baddie").fadeIn(1000);
+  playKesslRun();
 }
 
 function tiesIncoming(){
-  ($("#ties").fadeIn(1000));
-  ($("#ties").fadeOut(1000));
-  setTimeout($("#incoming").fadeIn(1000),2000);
+  ($("#ties").fadeIn(1000).fadeOut(1000));
+  ($("#incoming").fadeIn(1000).fadeOut(1000));
   playTieFighter();
-
-
 }
+
+// function tiesIncoming2(){
+//   setTimeout(;
+//   ($("#ties").fadeOut(1000));
+//   setTimeout($("#incoming").fadeOut(1000),4000)
+// }
 
 function collision($div1, $div2) {
   var x1 = $div1.offset().left;
@@ -286,9 +299,8 @@ function gridDown() {
             game.player1Score.html(score);
           } 
 
-          setTimeout(function() {
-            $bullet.remove()}, 1000
-          );
+          setTimeout(
+            $bullet.remove(), 0);
         });
       }
     });
@@ -509,7 +521,7 @@ function playChewyRoar(){
   }
 
 function playKesslRun(){
-  var audio = document.getElementById("audio");
+  var audio = document.getElementById("audio4");
   audio.src = ("./sounds/kesslrun.wav");
   audio.play();
   }
