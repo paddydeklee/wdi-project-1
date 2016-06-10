@@ -24,8 +24,6 @@ Any resources used were either created by hand or are free of right and duly cre
 
 Rebel Alliance by Paddy de Klee
 
-## Find the game here 
-
 [Find the game here](https://glacial-ocean-12121.herokuapp.com/)
 
 
