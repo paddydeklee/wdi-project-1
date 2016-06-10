@@ -2,7 +2,7 @@
 
 ***My first project for WDI London***
 
-![Alt text](/assets/coverphoto.png?raw=true "Coverphoto")
+[![Alt text](/assets/coverphoto.png?raw=true "Coverphoto")](https://glacial-ocean-12121.herokuapp.com/)
 
 ## Introduction
 
@@ -26,7 +26,7 @@ Rebel Alliance by Paddy de Klee
 
 ## Find the game here 
 
-[I'm an inline-style link](https://glacial-ocean-12121.herokuapp.com/)
+[Find the game here](https://glacial-ocean-12121.herokuapp.com/)
 
 
 
